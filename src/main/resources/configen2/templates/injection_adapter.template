@@ -1,0 +1,28 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// type {{component.adapter.type}} struct
+
+func (inst *{{component.adapter.type}}) __inject__(context application.Context) error {
+
+	// prepare
+	instance := inst.instance
+	injection, err := context.Injector().OpenInjection(context)
+	if err != nil {
+		return err
+	}
+	defer injection.Close()
+	if instance == nil {
+		return nil
+	}
+
+	// from getters
+{{injection.from.list}}
+
+	// to instance
+{{injection.to.list}}
+
+	// invoke custom inject method
+{{invoke.custom.injectMethod}}
+
+	return injection.Close()
+}

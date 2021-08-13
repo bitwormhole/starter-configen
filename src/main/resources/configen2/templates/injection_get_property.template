@@ -1,0 +1,7 @@
+	reader := injection.Select(selector)
+	defer reader.Close()
+	value, err := reader.{{injection.getter.readmethod}}()
+	if err != nil {
+		injection.OnError(err)
+	}
+	return value

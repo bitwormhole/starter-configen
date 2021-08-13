@@ -1,0 +1,4 @@
+
+func (inst * {{component.adapter.type}}) {{injection.getter.name}}(injection application.Injection,selector string) {{injection.field.type}} {
+{{injection.getter.inner}}
+}

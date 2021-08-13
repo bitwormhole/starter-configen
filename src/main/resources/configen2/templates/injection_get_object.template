@@ -1,0 +1,25 @@
+
+	reader := injection.Select(selector)
+	defer reader.Close()
+
+	cnt := reader.Count()
+	if cnt != 1 {
+		err := errors.New("select.result.count != 1, selector="+selector)
+		injection.OnError(err)
+		return nil
+	}
+
+	o1, err := reader.Read()
+	if err != nil {
+		injection.OnError(err)
+		return nil
+	}
+
+	o2, ok := o1.({{injection.field.type}})
+	if !ok {
+		err := errors.New("cannot cast component instance to type: {{injection.field.type}}")
+		injection.OnError(err)
+		return nil
+	}
+
+	return o2

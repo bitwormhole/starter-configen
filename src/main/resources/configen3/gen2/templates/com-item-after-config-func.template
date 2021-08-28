@@ -1,0 +1,51 @@
+////////////////////////////////////////////////////////////////////////////////
+
+// {{.ComFactoryStructName}} : the factory of component: {{.ComID}}
+type {{.ComFactoryStructName}} struct {
+
+    mPrototype * {{.ComStructName}}
+
+	{{.ComSelectors}}
+}
+
+func (inst * {{.ComFactoryStructName}}) init() application.ComponentFactory {
+
+	{{.ComSelectorsInit}}
+
+	inst.mPrototype = inst.newObject()
+    return inst
+}
+
+func (inst * {{.ComFactoryStructName}}) newObject() * {{.ComStructName}} {
+	return & {{.ComStructName}} {}
+}
+
+func (inst * {{.ComFactoryStructName}}) castObject(instance application.ComponentInstance) * {{.ComStructName}} {
+	return instance.Get().(*{{.ComStructName}})
+}
+
+func (inst * {{.ComFactoryStructName}}) GetPrototype() lang.Object {
+	return inst.mPrototype
+}
+
+func (inst * {{.ComFactoryStructName}}) NewInstance() application.ComponentInstance {
+	return config.SimpleInstance(inst, inst.newObject())
+}
+
+func (inst * {{.ComFactoryStructName}}) AfterService() application.ComponentAfterService {
+	return inst
+}
+
+func (inst * {{.ComFactoryStructName}}) Init(instance application.ComponentInstance) error {
+	{{.InvokeInitMethod}}
+}
+
+func (inst * {{.ComFactoryStructName}}) Destroy(instance application.ComponentInstance) error {
+	{{.InvokeDestroyMethod}}
+}
+
+func (inst * {{.ComFactoryStructName}}) Inject(instance application.ComponentInstance, context application.InstanceContext) error {
+	{{.InvokeInjectMethod}}
+}
+
+{{.ComGetters}}

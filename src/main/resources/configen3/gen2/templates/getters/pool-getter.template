@@ -1,0 +1,4 @@
+
+func (inst * {{.StructName}}) {{.MethodName}} (context application.InstanceContext) lang.ReleasePool {
+    return context.Pool()
+}

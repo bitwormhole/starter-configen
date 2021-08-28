@@ -1,0 +1,8 @@
+	// component: {{.ComID}}
+	cominfobuilder.Next()
+	cominfobuilder.ID("{{.ComID}}").Class("{{.ComClass}}").Aliases("{{.ComAliases}}").Scope("{{.ComScope}}")
+	cominfobuilder.Factory((&{{.ComFactoryStructName}}{}).init())
+	err = cominfobuilder.CreateTo(cb)
+	if err != nil {
+		return err
+	}

@@ -1,0 +1,4 @@
+
+func (inst * {{.StructName}}) {{.MethodName}} (context application.InstanceContext) {{.ReturnExpr}} {
+    return inst.{{.SelectorName}}.{{.SimpleValueGetterMethod}}(context)
+}

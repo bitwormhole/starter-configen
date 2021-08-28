@@ -1,0 +1,17 @@
+
+func (inst * {{.StructName}}) {{.MethodName}} (context application.InstanceContext) {{.ReturnExpr}} {
+
+	o1 := inst.{{.SelectorName}}.GetOne(context)
+	o2, ok := o1.({{.ReturnExpr}})
+	if !ok {
+		eb := &util.ErrorBuilder{}
+		eb.Message("bad cast")
+		eb.Set("com", "{{.ComID}}")
+		eb.Set("field", "{{.FieldName}}")
+		eb.Set("type1", "?")
+		eb.Set("type2", "{{.ReturnExpr}}")
+		context.HandleError(eb.Create())
+		return nil
+	}
+	return o2
+}

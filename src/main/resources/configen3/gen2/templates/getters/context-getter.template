@@ -1,0 +1,4 @@
+
+func (inst * {{.StructName}}) {{.MethodName}} (context application.InstanceContext) application.Context {
+    return context.Context()
+}

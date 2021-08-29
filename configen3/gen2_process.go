@@ -73,7 +73,7 @@ func (inst *gen2Process) buildCode(child *model.Child, sc *scanningContext) (str
 }
 
 func (inst *gen2Process) saveCode(code string, child *model.Child) error {
-	const outputFileName = "generated_config_by_starter_configen.go"
+	const outputFileName = "auto_generated_config_by_starter_configen.go"
 	dir := child.Path
 	file := dir
 	if file.IsFile() {

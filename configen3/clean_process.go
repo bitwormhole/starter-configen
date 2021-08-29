@@ -60,7 +60,7 @@ func (inst *CleanProcess) cleanDir(dir fs.Path) error {
 }
 
 func (inst *CleanProcess) acceptToDelete(item fs.Path) bool {
-	const prefix = "generated_"
+	const prefix = "auto_generated_"
 	const suffix = ".go"
 	name := item.Name()
 	return strings.HasPrefix(name, prefix) && strings.HasSuffix(name, suffix)

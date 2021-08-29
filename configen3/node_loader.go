@@ -147,7 +147,7 @@ func (inst *nodeLoader) getFileWriteTo(scan *model.Scan, node *model.Node, dir f
 	}
 
 	path := child.Href
-	file := "generated-node-" + childName
+	file := "auto_generated_node-" + childName
 
 	return dir.GetChild(path).GetChild(file + ".go"), nil
 }

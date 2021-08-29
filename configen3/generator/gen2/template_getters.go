@@ -4,6 +4,7 @@ import (
 	"errors"
 	"text/template"
 
+	"github.com/bitwormhole/starter-configen/configen3/data/model"
 	"github.com/bitwormhole/starter/util"
 )
 
@@ -111,12 +112,17 @@ func (inst *comFieldGetterTemplateImpl) prepareCommon(info *FieldInfo, data *com
 
 	data.StructName = com.FactoryStructName
 	data.MethodName = info.GetterName
-	data.ReturnExpr = field.TypeExpr
+	data.ReturnExpr = inst.makeGetterReturnExpr(field)
 	data.ComID = com.ComID
 	data.FieldName = field.Name
 	data.SelectorName = info.SelectorName
 
 	return nil
+}
+
+func (inst *comFieldGetterTemplateImpl) makeGetterReturnExpr(field *model.StructField) string {
+	ft := field.Type
+	return ft.String()
 }
 
 var theSimpleValueGetterTypeToMethodTable map[string]string

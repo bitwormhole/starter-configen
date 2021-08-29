@@ -7,7 +7,7 @@ import (
 {{.ImportListItems}}    
 )
 
-func autoConfig (cb application.ConfigBuilder) error {
+func autoGenConfig(cb application.ConfigBuilder) error {
 
 	var err error = nil
 	cominfobuilder := config.ComInfo()

@@ -10,7 +10,8 @@
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}",
-            "currentDir": "F:\\home\\xukun\\git.bitwormhole\\starter-configen\\src\\test\\go",
+            "currentDir": "F:\\home\\xukun\\git.bitwormhole\\starter",
+            "cwd": "F:\\home\\xukun\\git.bitwormhole\\starter",
             "env": {},
         }
     ]

@@ -178,7 +178,7 @@ func (inst *comItemAfterConfigFuncTemplateImpl) BuildComponent(info *ComInfo) (s
 
 	data := &comItemAfterConfigFuncTemplateData{}
 	data.ComID = info.ComID
-	data.ComStructName = info.InstanceStructName
+	data.ComStructName = inst.makeComStructName(info)
 	data.ComFactoryStructName = info.FactoryStructName
 	data.ComProxyStructName = info.ProxyStructName
 	data.InvokeInitMethod = inst.makeInvokeInitMethod(info)
@@ -190,6 +190,15 @@ func (inst *comItemAfterConfigFuncTemplateImpl) BuildComponent(info *ComInfo) (s
 	data.ComGetters = strGetters
 
 	return executeTemplate(inst.templ, data)
+}
+
+func (inst *comItemAfterConfigFuncTemplateImpl) makeComStructName(info *ComInfo) string {
+	field := info.InstanceField
+	ct := field.Type.Clone(true)
+	st := ct.ValueType
+	st.HasStar = false
+	str := st.String()
+	return str
 }
 
 func (inst *comItemAfterConfigFuncTemplateImpl) makeInvokeInitMethod(info *ComInfo) string {

@@ -63,7 +63,7 @@ func (inst *comItemAfterConfigFuncTemplateImpl) isInjectedField(f *model.StructF
 	name := f.Name
 	if len(name) > 0 {
 		ch0 := rune(name[0])
-		if ('A' < ch0) && (ch0 < 'Z') {
+		if ('A' <= ch0) && (ch0 <= 'Z') {
 			return true
 		}
 	}

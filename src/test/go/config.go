@@ -6,7 +6,8 @@ import (
 )
 
 func Config(cb application.ConfigBuilder) error {
-	return autoGenConfig(cb)
+	// return autoGenConfig(cb)
+	return nil
 }
 
 type theExample struct {

@@ -1,12 +1,14 @@
 package configen3
 
 import (
+	"crypto/sha1"
 	"errors"
 	"strings"
 
 	"github.com/bitwormhole/starter-configen/configen3/data/model"
 	"github.com/bitwormhole/starter/collection"
 	"github.com/bitwormhole/starter/io/fs"
+	"github.com/bitwormhole/starter/util"
 	"github.com/bitwormhole/starter/vlog"
 )
 
@@ -111,14 +113,32 @@ func (inst *nodeLoader) parseScans(props collection.Properties, dst *model.Node)
 
 	for _, name := range names {
 		kp := prefix + name + "." // the key prefix
+
+		href, err := props.GetPropertyRequired(kp + "path")
+		if err != nil {
+			return err
+		}
+		w2child, err := props.GetPropertyRequired(kp + "write-to-child")
+		if err != nil {
+			return err
+		}
+		w2file, err := props.GetPropertyRequired(kp + "write-to-file")
+		if err != nil {
+			return err
+		}
+		r, err := props.GetPropertyRequired(kp + "r")
+		if err != nil {
+			return err
+		}
+
 		scan := &model.Scan{}
 		scan.Name = name
-		scan.Href = props.GetProperty(kp+"path", "(undefine)")
-		scan.WriteToChild = props.GetProperty(kp+"write-to-child", "(undefine)")
-		scan.WriteToFile = props.GetProperty(kp+"write-to-file", "(undefine)")
-		scan.R = props.GetProperty(kp+"r", "false") == "true"
+		scan.Href = href
+		scan.WriteToChild = w2child
+		scan.WriteToFile = w2file
+		scan.R = r == "true"
 		scan.Path = dir.GetChild(scan.Href)
-		write2, err := inst.getFileWriteTo(scan, dst, dir)
+		write2, err := inst.makeFileWriteTo(scan, dst, dir)
 		if err != nil {
 			return err
 		}
@@ -129,10 +149,11 @@ func (inst *nodeLoader) parseScans(props collection.Properties, dst *model.Node)
 	return nil
 }
 
-func (inst *nodeLoader) getFileWriteTo(scan *model.Scan, node *model.Node, dir fs.Path) (fs.Path, error) {
+func (inst *nodeLoader) makeFileWriteTo(scan *model.Scan, node *model.Node, dir fs.Path) (fs.Path, error) {
 
 	var child *model.Child = nil
 	childName := scan.WriteToChild
+	scanName := scan.Name
 	children := node.Children
 
 	for _, ch := range children {
@@ -146,8 +167,12 @@ func (inst *nodeLoader) getFileWriteTo(scan *model.Scan, node *model.Node, dir f
 		return nil, errors.New("no child node named:" + childName)
 	}
 
+	sum := "(" + childName + "," + scanName + ")"
+	sumBytes := sha1.Sum([]byte(sum))
+	sum = util.StringifyBytes(sumBytes[:])
+
 	path := child.Href
-	file := "auto_generated_node-" + childName
+	file := "auto_generated_node-" + sum[0:8]
 
 	return dir.GetChild(path).GetChild(file + ".go"), nil
 }

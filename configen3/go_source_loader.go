@@ -9,6 +9,7 @@ import (
 
 	"github.com/bitwormhole/starter-configen/configen3/data/model"
 	"github.com/bitwormhole/starter/io/fs"
+	"github.com/bitwormhole/starter/markup"
 	"github.com/bitwormhole/starter/vlog"
 )
 
@@ -350,7 +351,29 @@ func (inst *goSourceBuilder) addStructField(name string, xtype *model.ComplexTyp
 		return
 	}
 
-	st.Fields = append(st.Fields, f)
+	if inst.acceptField(f) {
+		st.Fields = append(st.Fields, f)
+	}
+}
+
+func (inst *goSourceBuilder) acceptField(f *model.StructField) bool {
+	name := f.Name
+	tag := f.TagItems
+	if name == "instance" {
+		return true
+	}
+	if name == "" {
+		if markup.IsComponentMark(f.Type.ValueType.TypeName) {
+			// 这是个例外
+			return true
+		}
+		return false
+	}
+	if len(tag) < 1 {
+		return false
+	}
+	ch0 := rune(name[0])
+	return (('A' <= ch0) && (ch0 <= 'Z'))
 }
 
 func (inst *goSourceBuilder) onStructBegin() {

@@ -10,6 +10,7 @@ import (
 
 func nop(x ... interface{}){
 	util.Int64ToTime(0)
+	lang.CreateReleasePool()
 }
 
 

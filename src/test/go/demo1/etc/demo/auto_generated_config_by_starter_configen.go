@@ -12,10 +12,18 @@ import (
     
 )
 
+
+func nop(x ... interface{}){
+	util.Int64ToTime(0)
+	lang.CreateReleasePool()
+}
+
+
 func autoGenConfig(cb application.ConfigBuilder) error {
 
 	var err error = nil
 	cominfobuilder := config.ComInfo()
+	nop(err,cominfobuilder)
 
 
 
